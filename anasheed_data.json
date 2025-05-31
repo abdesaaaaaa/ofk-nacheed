@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1",
+        "filename": "nasheed1.mp3",
+        "title": "نشيد الصباح الجميل",
+        "description": "نشيد هادئ وملهم عن جمال الصباح.",
+        "language": "العربية",
+        "category": "ديني",
+        "media_type": "audio"
+    },
+    {
+        "id": "2",
+        "filename": "video_nasheed.mp4",
+        "title": "فيديو نشيد القدس",
+        "description": "نشيد مرئي مؤثر عن مدينة القدس.",
+        "language": "العربية",
+        "category": "ديني",
+        "media_type": "video"
+    },
+    {
+        "id": "3",
+        "filename": "anasheed_education.mp3",
+        "title": "Anasheed of Education",
+        "description": "An inspiring nasheed about the importance of knowledge.",
+        "language": "الإنجليزية",
+        "category": "تربوي",
+        "media_type": "audio"
+    }
+]
