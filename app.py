@@ -9,10 +9,9 @@ from functools import wraps
 import mimetypes
 
 app = Flask(__name__)
-ALLOWED_MEDIA_TYPES = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg']
 # قم بتغيير هذا لمفتاح سري قوي ومعقد جداً في بيئة الإنتاج!
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_super_secret_key_that_you_should_change_in_production_1234567890')
-app.config['ADMIN_SECRET_CODE'] = '001145668911' # الكود السري للإدارة كما طلبت
+app.config['ADMIN_SECRET_CODE'] = '12345' # الكود السري للإدارة كما طلبت
 
 # --- إعدادات قاعدة البيانات SQLite ---
 DATABASE = os.path.join(app.root_path, 'site.db')
@@ -1644,8 +1643,8 @@ def add_nasheed_admin():
             return render_template_string(ADD_NASHEED_HTML_TEMPLATE, request=request)
         
         # التحقق من نوع الملف وحجمه (يمكن إضافة قيود أكثر صرامة هنا)
-        if not audio_file.mimetype or audio_file.mimetype not in ALLOWED_MEDIA_TYPES:
-            flash('الملف المرفوع ليس ملف صوتي/فيديو صالحاً. الرجاء اختيار ملف من نوع MP3، MP4، WAV، أو OGG.', 'danger')
+        if not audio_file.mimetype or not audio_file.mimetype.startswith('audio/'):
+            flash('الملف المرفوع ليس ملف صوتي صالح (MP3). الرجاء اختيار ملف MP3.', 'danger')
             return render_template_string(ADD_NASHEED_HTML_TEMPLATE, request=request)
         
         # قراءة البيانات الصوتية
@@ -1733,8 +1732,8 @@ def edit_nasheed_admin(nasheed_id):
             return render_template_string(EDIT_NASHEED_HTML_TEMPLATE, nasheed=nasheed)
 
         if audio_file and audio_file.filename != '':
-            if not audio_file.mimetype or audio_file.mimetype not in ALLOWED_MEDIA_TYPES:
-                flash('الملف المرفوع ليس ملف صوتي/فيديو صالحاً. الرجاء اختيار ملف من نوع MP3، MP4، WAV، أو OGG.', 'danger')
+            if not audio_file.mimetype or not audio_file.mimetype.startswith('audio/'):
+                flash('الملف المرفوع ليس ملف صوتي صالح (MP3). الرجاء اختيار ملف MP3.', 'danger')
                 conn.close()
                 return render_template_string(EDIT_NASHEED_HTML_TEMPLATE, nasheed=nasheed)
             
@@ -1903,7 +1902,7 @@ if __name__ == '__main__':
     if not os.path.exists(anasheed_files_path):
         os.makedirs(anasheed_files_path)
         print(f"Created directory for initial nasheeds: {anasheed_files_path}")
-
+    
     # تأكد من إنشاء مجلد static/img إذا لم يكن موجوداً (لصورة الخلفية)
     static_img_path = os.path.join(app.root_path, 'static', 'img')
     if not os.path.exists(static_img_path):
@@ -1911,4 +1910,4 @@ if __name__ == '__main__':
         print(f"Created directory for static images: {static_img_path}")
 
     init_db() # يجب أن يتم استدعاء init_db() قبل تشغيل التطبيق
-    app.run(host='0.0.0.0', port=5000, debug=False) # تم تغيير debug إلى False
+    app.run(debug=True)
